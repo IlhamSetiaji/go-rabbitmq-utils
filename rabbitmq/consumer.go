@@ -18,7 +18,6 @@ func ConsumeMessages(queue string, handler MessageHandler) {
 		return
 	}
 
-	forever := make(chan bool)
 	go func() {
 		for d := range msgs {
 			if err := d.Nack(false, true); err != nil {
@@ -31,6 +30,8 @@ func ConsumeMessages(queue string, handler MessageHandler) {
 			}
 		}
 	}()
-	log.Printf("Listening for messages on queue: %s", queue)
-	<-forever
+	log.Printf("Listening for messages on queue haha: %s", queue)
+
+	// Block the main goroutine to keep the program running
+	select {}
 }
