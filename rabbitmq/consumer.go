@@ -35,6 +35,8 @@ func ConsumeMessages(queue string, handler MessageHandler) {
 				// Acknowledge the message after successful processing
 				if err := d.Ack(false); err != nil {
 					log.Printf("Error acknowledging message: %v", err)
+				} else {
+					log.Printf("Acknowledged message: %s", d.Body)
 				}
 			}
 		}()
