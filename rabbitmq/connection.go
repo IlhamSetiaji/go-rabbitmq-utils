@@ -33,6 +33,9 @@ func InitializeConnection(rabbitMQURL string) error {
 
 // GetChannel returns the shared RabbitMQ channel for publishing/consuming.
 func GetChannel() *amqp091.Channel {
+	if connection == nil || channel == nil {
+		return nil
+	}
 	return channel
 }
 

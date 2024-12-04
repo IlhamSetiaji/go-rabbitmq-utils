@@ -1,6 +1,7 @@
 package rabbitmq
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/rabbitmq/amqp091-go"
@@ -8,6 +9,10 @@ import (
 
 func PublishMessage(exchange, routingKey string, body []byte) error {
 	ch := GetChannel()
+	if ch == nil {
+		log.Printf("Failed to publish message: channel is not open")
+		return fmt.Errorf("channel is not open")
+	}
 	defer ch.Close()
 
 	err := ch.Publish(exchange, routingKey, false, false, amqp091.Publishing{
