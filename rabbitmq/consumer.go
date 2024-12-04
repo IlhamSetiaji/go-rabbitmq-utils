@@ -21,7 +21,14 @@ func ConsumeMessages(queue string, handler MessageHandler) {
 	forever := make(chan bool)
 	go func() {
 		for d := range msgs {
+			if err := d.Nack(false, true); err != nil {
+				log.Printf("Error nacking message: %v", err)
+				continue
+			}
 			handler(d)
+			if err := d.Ack(false); err != nil {
+				log.Printf("Error acknowledging message: %v", err)
+			}
 		}
 	}()
 	log.Printf("Listening for messages on queue: %s", queue)
